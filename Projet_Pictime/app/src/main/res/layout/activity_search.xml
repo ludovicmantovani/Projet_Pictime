@@ -1,50 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.epsi.ludovic.meteo.activity.SearchActivity">
 
+    <!--Autocomplete city research-->
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/eTVille"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ville"
-                android:layout_weight="1"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rechercher"
-                android:gravity="center"
-                android:id="@+id/buttonrechercher">
-            </Button>
-
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"/>
+            android:text="Recherche par nom:"
+            android:textSize="@dimen/section_title" />
 
+        <EditText
+            android:id="@+id/eTVille"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="Ville" />
     </LinearLayout>
 
-</RelativeLayout>
+    <!--Geolocalisation city research-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recherche à proximité:"
+                android:textSize="@dimen/section_title" />
+
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text=""
+                android:textSize="@dimen/section_title"
+                tools:text="10 Km" />
+        </LinearLayout>
+
+
+        <SeekBar
+            android:id="@+id/skbDistance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="10" />
+
+        <!--TextViews for SeekBarlegend-->
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="0 Km" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="50 Km" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="10dp"
+                android:text="100 Km" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnRechercher"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Rechercher">
+        </Button>
+    </LinearLayout>
+
+    <!--Favoris city research-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recherche par favoris:"
+            android:textSize="@dimen/section_title" />
+
+        <Button
+            android:id="@+id/btnFavoris"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Favoris">
+        </Button>
+        <Button
+            android:id="@+id/btnFavorisMap"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Map">
+        </Button>
+
+    </LinearLayout>
+</LinearLayout>
