@@ -20,7 +20,6 @@
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.DetailActivity" />
-        <activity android:name=".activity.FavoriteActivity" />
         <activity android:name=".activity.ListActivity" />
         <activity android:name=".activity.MenuActivity"></activity>
     </application>
