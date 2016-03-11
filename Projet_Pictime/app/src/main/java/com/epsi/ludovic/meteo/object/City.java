@@ -1,25 +1,47 @@
 package com.epsi.ludovic.meteo.object;
 
-import java.util.ArrayList;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+import java.util.List;
 
 /**
- * Created by Ludovic on 24/01/2016.
+ * Created by Betty on 15/02/2016.
  */
 public class City {
 
-    private int id;
-    private String name;
-    private ArrayList weather; // Description
-    private Object main;
-    private String txHumidity;
+    public String name;
 
+    @SerializedName("id")
+    public String id;
 
-    public int getId() {
-        return id;
+    @SerializedName("coord")
+    public Coord coord;
+
+    @SerializedName("main")
+    public Main main;
+
+    @SerializedName("weather")
+    public List<Weather> weather;
+
+    @SerializedName("wind")
+    public Wind wind;
+
+    public City(String name) {
+        this.name = name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public List<Weather> getWeather() {
+        return weather;
+    }
+
+    public void setWeather(List<Weather> weather) {
+        this.weather = weather;
+    }
+
+    public Date update;
+
+    public City() {
     }
 
     public String getName() {
@@ -30,39 +52,60 @@ public class City {
         this.name = name;
     }
 
-    public ArrayList getWeather() {
-        return weather;
-    }
-
-    public void setWeather(ArrayList weather) {
-        this.weather = weather;
-    }
-
-    public Object getMain() {
+    public Main getMain() {
         return main;
     }
 
-    public void setMain(Object main) {
+    public void setMain(Main main) {
         this.main = main;
     }
 
-    public String getTxHumidity() {
-        return txHumidity;
+    public Date getUpdate() {
+        return update;
     }
 
-    public void setTxHumidity(String txHumidity) {
-        this.txHumidity = txHumidity;
+    public void setUpdate(Date update) {
+        this.update = update;
     }
 
+
+    public String getId() {
+
+        return id;
+    }
+
+    public void setId(String id) {
+
+        this.id = id;
+    }
+
+    public Coord getCoord() {
+
+        return coord;
+    }
+
+    public void setCoord(Coord coord) {
+
+        this.coord = coord;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
 
     @Override
     public String toString() {
         return "City{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
                 ", weather=" + weather +
                 ", main=" + main +
-                ", txHumidity='" + txHumidity + '\'' +
+                ", coord=" + coord +
+                ", wind=" + wind +
                 '}';
     }
 }
