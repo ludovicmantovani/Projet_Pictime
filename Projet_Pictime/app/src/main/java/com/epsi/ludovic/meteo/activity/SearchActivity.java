@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +28,7 @@ import java.util.Map;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends MenuActivity {
 
     private final Context context = this;
     private EditText etVille = null;
@@ -64,7 +67,22 @@ public class SearchActivity extends AppCompatActivity {
         btnRechercher.setOnClickListener(searchDistanceHandler);
         btnFavoris.setOnClickListener(searchFavorisHandler);
         btnFavorisMap.setOnClickListener(searchFavorisMapHandler);
+
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("Test", "2");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("Test", "4");
+        return super.onOptionsItemSelected(item);
+    }
+
 
     SeekBar.OnSeekBarChangeListener distanceHandler = new SeekBar.OnSeekBarChangeListener(){
         @Override

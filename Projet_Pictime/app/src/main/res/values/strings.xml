@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Meteo</string>
+    <string name="nav_home">Accueil</string>
+    <string name="nav_star">Favoris</string>
+    <string name="nav_map">Carte</string>
+    <string name="nav_contact">Contacts</string>
 </resources>
