@@ -8,13 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/colorPrimary"
-            android:title="@string/app_name"
-            />
         <FrameLayout
             android:id="@+id/activity_content"
             android:layout_width="match_parent"

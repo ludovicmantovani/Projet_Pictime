@@ -70,19 +70,6 @@ public class SearchActivity extends MenuActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("Test", "2");
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("Test", "4");
-        return super.onOptionsItemSelected(item);
-    }
-
 
     SeekBar.OnSeekBarChangeListener distanceHandler = new SeekBar.OnSeekBarChangeListener(){
         @Override
