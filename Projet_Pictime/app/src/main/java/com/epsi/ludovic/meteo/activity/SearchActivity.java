@@ -1,29 +1,20 @@
 package com.epsi.ludovic.meteo.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.epsi.ludovic.meteo.R;
 import com.epsi.ludovic.meteo.itf.Weather;
-import com.epsi.ludovic.meteo.object.City;
 import com.epsi.ludovic.meteo.service.ServiceGenerator;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
