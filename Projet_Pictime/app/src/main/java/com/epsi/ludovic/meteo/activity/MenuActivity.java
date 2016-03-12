@@ -41,7 +41,6 @@ public class MenuActivity extends AppCompatActivity {
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Log.d("Test", "3");
                 switch (menuItem.getItemId()) {
 
                     case R.id.nav_home:
