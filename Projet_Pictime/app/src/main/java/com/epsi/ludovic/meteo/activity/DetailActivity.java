@@ -4,6 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,15 +27,17 @@ import java.util.Map;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class DetailActivity extends MenuActivity {
+public class DetailActivity extends MenuActivity implements SensorEventListener {
 
     private Map<String, String> parameters = null;
+    private SensorManager sensorManager;
     private final Context context = this;
     private TextView lblCityName;
     private TextView lblWeather;
     private TextView lblWind;
     private TextView lblTemp;
     private  Weather weatherService = null;
+    private long lastUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,8 @@ public class DetailActivity extends MenuActivity {
         lblWind = (TextView) findViewById(R.id.city_wind);
         lblTemp = (TextView) findViewById(R.id.city_temp);
         weatherService = ServiceGenerator.createService(Weather.class);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lastUpdate = System.currentTimeMillis();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String idCity = bundle.getString("idCity");
@@ -50,7 +59,12 @@ public class DetailActivity extends MenuActivity {
         parameters.put("lang", "fr");
         parameters.put("units", "metric");
         parameters.put("APPID", "dea3ec44f7bd6dbcdbd20c4bbf9b6f05");
+        displayInformation();
+    }
 
+
+        public void displayInformation()
+    {
         try {
             retrofit.Callback<City> c = new retrofit.Callback<City>() {
 
@@ -60,7 +74,6 @@ public class DetailActivity extends MenuActivity {
                     lblWeather.setText(s.getWeather().get(0).getDescription().toString().toUpperCase());
                     lblWind.setText(s.getWind().getSpeed());
                     lblTemp.setText(s.getMain().getTemp());
-
 
                 }
 
@@ -83,6 +96,57 @@ public class DetailActivity extends MenuActivity {
             weatherService.searchWeather(parameters, c);
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            getAccelerometer(event);
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // register this class as a listener for the orientation and
+        // accelerometer sensors
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        // unregister listener
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    private void getAccelerometer(SensorEvent event) {
+        float[] values = event.values;
+        // Movement
+        float x = values[0];
+        float y = values[1];
+        float z = values[2];
+
+        float accelationSquareRoot = (x * x + y * y + z * z)
+                / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+        long actualTime = event.timestamp;
+        if (accelationSquareRoot >= 2) //
+        {
+            if (actualTime - lastUpdate < 200) {
+                return;
+            }
+            lastUpdate = actualTime;
+            displayInformation();
         }
     }
 
