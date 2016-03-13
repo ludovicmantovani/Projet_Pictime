@@ -2,7 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.epsi.ludovic.meteo">
 
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <permission
+        android:name="com.example.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.permission.MAPS_RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -10,18 +23,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashscreenActivity">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDd5Ms6hRfVAxcTeXLbEmsx23XgAtsaEd4" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity android:name=".activity.SplashscreenActivity" android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.SearchActivity"
+        android:parentActivityName=".activity.MenuActivity" >
+        </activity>
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.ListActivity" />
-        <activity android:name=".activity.MenuActivity"></activity>
+        <activity android:name=".activity.MenuActivity" />
     </application>
 
 </manifest>

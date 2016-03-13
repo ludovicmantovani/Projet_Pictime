@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.epsi.ludovic.meteo.R;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends MenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
