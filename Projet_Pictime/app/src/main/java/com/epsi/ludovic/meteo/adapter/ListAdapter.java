@@ -41,7 +41,6 @@ public class ListAdapter extends ArrayAdapter<City> {
         cityName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("test", "string: " + city.getName());
                 Intent intent = new Intent(parent.getContext(), DetailActivity.class);
 
                 //On affecte à l'Intent le Bundle que l'on a créé

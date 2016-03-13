@@ -30,16 +30,6 @@ public class ListActivity extends MenuActivity {
         DataSearch data =  (DataSearch) bundle.getSerializable("data");
         ArrayList<City> list = data.getCities();
         ListAdapter adapter = new ListAdapter(getApplicationContext(), list ) ;
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
-            }
-        });
         mListView.setAdapter(adapter);
 
     }

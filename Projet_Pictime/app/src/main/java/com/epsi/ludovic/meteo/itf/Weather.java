@@ -14,7 +14,7 @@ import retrofit.http.QueryMap;
  */
 public interface Weather {
     @GET("/weather")
-    void citys(@QueryMap Map<String, String> c, retrofit.Callback<City> callback);
+    void searchWeather(@QueryMap Map<String, String> c, retrofit.Callback<City> callback);
 
 
     @GET("/find")
