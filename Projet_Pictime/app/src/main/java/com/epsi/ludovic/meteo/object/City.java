@@ -10,22 +10,28 @@ import java.util.List;
  */
 public class City {
 
-    public String name;
+    private String name;
+
+    private long technical_id;
 
     @SerializedName("id")
-    public String id;
+    private String id;
 
     @SerializedName("coord")
-    public Coord coord;
+    private Coord coord;
 
     @SerializedName("main")
-    public Main main;
+    private Main main;
 
     @SerializedName("weather")
-    public List<Weather> weather;
+    private List<Weather> weather;
 
     @SerializedName("wind")
-    public Wind wind;
+    private Wind wind;
+
+    private Date update = null;
+
+    private int favorite = 0;
 
     public City(String name) {
         this.name = name;
@@ -38,8 +44,6 @@ public class City {
     public void setWeather(List<Weather> weather) {
         this.weather = weather;
     }
-
-    public Date update;
 
     public City() {
     }
@@ -97,15 +101,37 @@ public class City {
         this.wind = wind;
     }
 
+    public long getTechnical_id() {
+        return technical_id;
+    }
+
+    public void setTechnical_id(long technical_id) {
+        this.technical_id = technical_id;
+    }
+
+    public Boolean isFavorite() {
+        return (this.favorite == 1);
+    }
+
+    public void setFavorite(Boolean etat) {
+        if (etat == true)
+        {this.favorite = 1;}
+        else
+        {this.favorite = 0;}
+    }
+
     @Override
     public String toString() {
         return "City{" +
                 "name='" + name + '\'' +
+                ", technical_id=" + technical_id +
                 ", id='" + id + '\'' +
-                ", weather=" + weather +
-                ", main=" + main +
                 ", coord=" + coord +
+                ", main=" + main +
+                ", weather=" + weather +
                 ", wind=" + wind +
+                ", update=" + update +
+                ", favorite=" + favorite +
                 '}';
     }
 }

@@ -8,17 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public abstract class DAOBase {
 
-    // Version de la base
+    // Batabase's version
     protected final static int VERSION = 1;
 
-    // Le nom du fichier de la base
+    // File's name
     protected final static String NOM = "pictime_project_database.db";
 
     protected SQLiteDatabase mDb = null;
     protected DatabaseHandler dbHandler = null;
 
-    public DAOBase(Context pContext) {
-        this.dbHandler = new DatabaseHandler(pContext, NOM, null, VERSION);
+    public DAOBase(Context context){
+        this.dbHandler = new DatabaseHandler(context, NOM, null, VERSION);
     }
 
     public SQLiteDatabase open() {
