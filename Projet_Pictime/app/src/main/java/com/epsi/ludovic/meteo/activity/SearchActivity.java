@@ -40,8 +40,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class SearchActivity extends MenuActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
-
+    //TODO delete distance search
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private final Context context = this;
     private EditText etVille = null;

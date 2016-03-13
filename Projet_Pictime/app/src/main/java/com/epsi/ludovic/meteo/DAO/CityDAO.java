@@ -74,11 +74,13 @@ public class CityDAO extends DAOBase {
     //Update a city in BDD
     public int update(City city)
     {
-        //Set the format to sql date time
+        //Set the format to sql date time*
+        //TODO Check date format
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date newdate = new Date();
         int favoriteValue = 0;
 
+        //TODO ! if null attribute
         ContentValues contentValues = new ContentValues();
         contentValues.put(BddNameConvention.CITY_COORD_LON, city.getCoord().getLon());
         contentValues.put(BddNameConvention.CITY_COORD_LAT, city.getCoord().getLat());
@@ -93,8 +95,8 @@ public class CityDAO extends DAOBase {
 
         int ret = mDb.update(BddNameConvention.CITY_TABLE_NAME,
                 contentValues,
-                BddNameConvention.CITY_KEY + " = ?",
-                new String[]{String.valueOf(city.getTechnical_id())});
+                BddNameConvention.CITY_ID + " = ?",
+                new String[]{String.valueOf(city.getId())});
 
         return(ret);
     }
@@ -139,29 +141,31 @@ public class CityDAO extends DAOBase {
         return(new DataSearch(cityArrayList));
     }
 
-    public void setToFavorite(City city, Boolean becomeFavorite) {
+    //TODO UPDATE
+    public int setToFavorite(City city, Boolean becomeFavorite) {
         ContentValues contentValues = new ContentValues();
         int favoriteValue = 0;
         if (becomeFavorite){favoriteValue = 1;}
         contentValues.put(BddNameConvention.CITY_FAVORITE, favoriteValue);
+        int ret = mDb.update(BddNameConvention.CITY_TABLE_NAME,
+                contentValues,
+                BddNameConvention.CITY_ID + " = ?",
+                new String[]{String.valueOf(city.getId())});
+        return ret;
     }
 
-    public DataSearch getCityById(String cityId)
+    public City getCityById(String cityId)
     {
-        ArrayList<City> cityArrayList = new ArrayList<City>();
+        City newCity;
         String query = "select * from " + BddNameConvention.CITY_TABLE_NAME +
                 " where " + BddNameConvention.CITY_ID + " = ? ";
 
         Cursor cursor = mDb.rawQuery(query, new String[]{cityId});
 
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            City city = cursorToCity(cursor);
-            cityArrayList.add(city);
-            cursor.moveToNext();
-        }
+        newCity = cursorToCity(cursor);
         cursor.close();
-        return(new DataSearch(cityArrayList));
+        return(newCity);
     }
 
 }
