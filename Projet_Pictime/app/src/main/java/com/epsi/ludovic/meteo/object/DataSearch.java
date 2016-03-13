@@ -2,12 +2,13 @@ package com.epsi.ludovic.meteo.object;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by BettyFlop on 19/02/2016.
  */
-public class DataSearch {
+public class DataSearch implements Serializable {
 
     @SerializedName("list")
     private ArrayList<City> cities;

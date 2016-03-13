@@ -2,10 +2,12 @@ package com.epsi.ludovic.meteo.object;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Betty on 06/03/2016.
  */
-public class Coord {
+public class Coord implements Serializable {
 
     @SerializedName("lon")
     private String lon;

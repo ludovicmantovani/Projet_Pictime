@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -26,14 +27,19 @@ import android.widget.Toast;
 import com.epsi.ludovic.meteo.R;
 import com.epsi.ludovic.meteo.itf.Weather;
 import com.epsi.ludovic.meteo.object.City;
+import com.epsi.ludovic.meteo.object.DataSearch;
 import com.epsi.ludovic.meteo.service.ServiceGenerator;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import retrofit.RetrofitError;
@@ -52,7 +58,7 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
     private Button btnFavoris = null;
     private Button btnFavorisMap = null;
     private GoogleApiClient mGoogleApiClient;
-    private Weather city = null;
+    private Weather weatherService = null;
     private Map<String, String> parameters = null;
 
     @Override
@@ -73,7 +79,7 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
         btnRechercher = (Button) findViewById(R.id.btnRechercher);
         btnFavoris = (Button) findViewById(R.id.btnFavoris);
         btnFavorisMap = (Button) findViewById(R.id.btnFavorisMap);
-        city = ServiceGenerator.createService(Weather.class);
+        weatherService = ServiceGenerator.createService(Weather.class);
 
         if (etVille == null || tvDistance == null || skbDistance == null ||
                 btnRechercher == null || btnFavoris == null || btnFavorisMap == null) {
@@ -113,9 +119,9 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
              * Method to display the location on UI
              * */
 
-        Intent i = new Intent(SearchActivity.this, ListActivity.class);
+/*        Intent i = new Intent(SearchActivity.this, ListActivity.class);
 
-        startActivity(i);
+        startActivity(i);*/
     }
 };
 
@@ -149,7 +155,11 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
 
     @Override
     public void onStart() {
+
         super.onStart();
+/*        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }*/
     }
 
 
@@ -193,50 +203,51 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
                 .getLastLocation(mGoogleApiClient);
 
         if (mLastLocation != null) {
+             Integer number = 10;
 
             double latitude = mLastLocation.getLatitude();
             double longitude = mLastLocation.getLongitude();
-            Log.d("DisplayLOCATION", String.valueOf(latitude) + String.valueOf(longitude));
+            parameters = new LinkedHashMap<String, String>();
+            parameters.put("lat", String.valueOf(latitude));
+            parameters.put("lon", String.valueOf(longitude));
+            parameters.put("cnt",  String.valueOf(number));
+            parameters.put("APPID", "dea3ec44f7bd6dbcdbd20c4bbf9b6f05");
         }
-        /*String ville = SearchActivity.this.etVille.getText().toString();
-        if (ville != "") {
-            parameters = new HashMap<String, String>();
-            parameters.put("q", ville);
-            parameters.put("lang", "fr");
-            parameters.put("units", "metric");
-            parameters.put("appid", "44db6a862fba0b067b1930da0d769e98");
 
-            try {
-                retrofit.Callback<City> c = new retrofit.Callback<City>() {
 
-                    @Override
-                    public void success(City s, Response response) {
-                        Log.d("SUCESS", s.toString());
-                    }
+        try {
+            retrofit.Callback<JsonElement> c = new retrofit.Callback<JsonElement>() {
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d("DEBUG1", error.getUrl());
-                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                        alert.setTitle(error.getMessage())
-                                .setMessage("Failed to " + error.getUrl() + ": " +
-                                        error.getMessage())
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert);
-                        alert.show();
-                    }
-                };
-                city.citys(parameters, c);
-            } catch (Exception e) {
-                Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(context, "Ville manquante !", Toast.LENGTH_LONG).show();
-        }*/
-        //Appel de l'activité list pour les favoris
+                @Override
+                public void success(JsonElement s, Response response) {
+                    Gson gson = new Gson();
+                    DataSearch data = gson.fromJson(s, DataSearch.class);
+                    Intent intent = new Intent(SearchActivity.this, ListActivity.class);
+                    intent.putExtra("data", data);
+                    startActivity(intent);
+
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.d("DEBUG1", error.getUrl());
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle(error.getMessage())
+                            .setMessage("Failed to " + error.getUrl() + ": " +
+                                    error.getMessage())
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert);
+                    alert.show();
+                }
+            };
+            weatherService.searchGPS(parameters, c);
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
     }
 
 
@@ -258,7 +269,7 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        mGoogleApiClient.connect();
     }
 
     @Override
