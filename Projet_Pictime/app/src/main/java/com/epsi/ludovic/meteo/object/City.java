@@ -2,14 +2,16 @@ package com.epsi.ludovic.meteo.object;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Betty on 15/02/2016.
  */
-public class City {
+public class City implements Serializable {
 
+    @SerializedName("name")
     private String name;
 
     private long technical_id;
