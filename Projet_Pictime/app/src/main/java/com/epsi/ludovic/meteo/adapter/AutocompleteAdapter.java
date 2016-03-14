@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import com.epsi.ludovic.meteo.DAO.BddNameConvention;
+import com.epsi.ludovic.meteo.DAO.CityDAO;
 import com.epsi.ludovic.meteo.R;
 import com.epsi.ludovic.meteo.object.City;
 
@@ -18,19 +20,19 @@ import java.util.List;
  */
 public class AutocompleteAdapter extends ArrayAdapter<City> {
 
-    Context context;
+    Context context = getContext();
     int resource, textViewResourceId;
-    List<City> items, tempItems, suggestions;
+    List<City> tempItems, suggestions;
+    CityDAO cityDAO = new CityDAO(context);
 
-    public AutocompleteAdapter(Context context, int resource, int textViewResourceId, List<City> items)
+    public AutocompleteAdapter(Context context, int resource, int textViewResourceId)
     {
-        super(context, resource, textViewResourceId, items);
+        super(context, resource, textViewResourceId);
         this.context = context;
         this.resource = resource;
-        this.textViewResourceId = textViewResourceId;
-        this.items = items;
-        tempItems = new ArrayList<City>(items);
+        this.textViewResourceId = textViewResourceId;;
         suggestions = new ArrayList<City>();
+        tempItems = new ArrayList<City>();
     }
 
     @Override
@@ -62,8 +64,13 @@ public class AutocompleteAdapter extends ArrayAdapter<City> {
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            if (constraint != null) {
+            if (constraint != null && constraint.length() > 3) {
                 suggestions.clear();
+
+                cityDAO.open();
+                tempItems = cityDAO.getCityLike(constraint.toString()).getCities();
+                cityDAO.close();
+
                 for (City city : tempItems) {
                     if (city.getName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         suggestions.add(city);

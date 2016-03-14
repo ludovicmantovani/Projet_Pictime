@@ -90,7 +90,7 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
         cityDAO = new CityDAO(context);
         cityDAO.open();
         List<City> cities = cityDAO.getCities().getCities();
-        AutocompleteAdapter  autocompleteAdapter = new AutocompleteAdapter(context,R.layout.activity_search, R.id.city_name, cities);
+        AutocompleteAdapter  autocompleteAdapter = new AutocompleteAdapter(context,R.layout.activity_search, R.id.city_name);
         cityDAO.close();
         autoCompleteTextViewVille.setAdapter(autocompleteAdapter);
         btnRechercher.setOnClickListener(searchDistanceHandler);
