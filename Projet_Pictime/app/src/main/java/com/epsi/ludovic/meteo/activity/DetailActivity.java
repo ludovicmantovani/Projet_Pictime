@@ -12,6 +12,7 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,9 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
     private TextView lblWeather;
     private TextView lblWind;
     private TextView lblTemp;
+    private TextView lblPressure;
+    private TextView lblHumidity;
+    private ImageView iconeWeather;
     private  Weather weatherService = null;
     private long lastUpdate;
 
@@ -47,6 +51,10 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
         lblWeather = (TextView) findViewById(R.id.city_weather);
         lblWind = (TextView) findViewById(R.id.city_wind);
         lblTemp = (TextView) findViewById(R.id.city_temp);
+        lblPressure = (TextView) findViewById(R.id.city_pressure);
+        lblHumidity = (TextView) findViewById(R.id.city_humidity);
+        iconeWeather = (ImageView) findViewById(R.id.city_logo);
+
         weatherService = ServiceGenerator.createService(Weather.class);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         lastUpdate = System.currentTimeMillis();
@@ -72,8 +80,16 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
                 public void success(City s, Response response) {
                     lblCityName.setText(s.getName());
                     lblWeather.setText(s.getWeather().get(0).getDescription().toString().toUpperCase());
-                    lblWind.setText(s.getWind().getSpeed());
+                    Double speed = Double.parseDouble(s.getWind().getSpeed())*(3.6);
+                    Log.d("VITESSE", String.format("%.2f", speed));
+                    lblWind.setText(String.format("%.2f", speed));
                     lblTemp.setText(s.getMain().getTemp());
+                    lblPressure.setText(s.getMain().getPressure());
+                    lblHumidity.setText(s.getMain().getHumidity());
+                    String name = "logo"+s.getWeather().get(0).getIcon();
+                    int id = context.getResources().getIdentifier(name, "drawable",
+                            context.getPackageName());
+                    iconeWeather.setImageResource(id);
 
                 }
 

@@ -12,6 +12,29 @@ public class Main implements Serializable {
     @SerializedName("temp")
     public String temp ;
 
+
+    @SerializedName("pressure")
+    public String pressure;
+
+    @SerializedName("humidity")
+    public String humidity;
+
+    public String getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(String pressure) {
+        this.pressure = pressure;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
     public String getTemp() {
         return temp;
     }
@@ -20,14 +43,18 @@ public class Main implements Serializable {
         this.temp = temp;
     }
 
-    public Main(String temp, String temp_min, String temp_max) {
+    public Main(String temp, String pressure, String humidity) {
         this.temp = temp;
+        this.pressure = pressure;
+        this.humidity = humidity;
     }
 
     @Override
     public String toString() {
         return "Main{" +
                 "temp='" + temp + '\'' +
+                ", pressure='" + pressure + '\'' +
+                ", humidity='" + humidity + '\'' +
                 '}';
     }
 }
