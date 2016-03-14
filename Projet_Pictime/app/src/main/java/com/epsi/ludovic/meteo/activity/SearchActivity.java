@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,10 +90,11 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
 
         cityDAO = new CityDAO(context);
         cityDAO.open();
-        List<City> cities = cityDAO.getCities().getCities();
-        AutocompleteAdapter  autocompleteAdapter = new AutocompleteAdapter(context,R.layout.activity_search, R.id.city_name);
+        AutocompleteAdapter autocompleteAdapter = new AutocompleteAdapter(context, R.layout.activity_search, R.id.city_name);
         cityDAO.close();
         autoCompleteTextViewVille.setAdapter(autocompleteAdapter);
+        autoCompleteTextViewVille.setOnItemClickListener(searchNameHandler);
+
         btnRechercher.setOnClickListener(searchDistanceHandler);
         btnFavoris.setOnClickListener(searchFavorisHandler);
         btnFavorisMap.setOnClickListener(searchFavorisMapHandler);
@@ -113,21 +115,50 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
         }
     };
 
+    private void goToFavorite(Class intentClass)
+    {
+        DataSearch dataSearch = null;
+
+        //Recherche des villes favorites dans la BDD
+        cityDAO.open();
+        dataSearch = cityDAO.getFavorite();
+        cityDAO.close();
+
+        //Si favoris présents dans la BDD
+        if (dataSearch.getCities().size() > 0) {
+            //Appel de l'activité list pour les favoris
+            Intent i = new Intent(SearchActivity.this, intentClass);
+            i.putExtra("DataSearch", dataSearch);
+            startActivity(i);
+        }
+        else //sinon affichage message
+        {
+            Toast.makeText(context, "Vous n'avez pas de villes favorites.",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
 
     View.OnClickListener searchFavorisHandler = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //Appel de l'activité list pour les favoris
-            Intent i = new Intent(SearchActivity.this, ListActivity.class);
-            startActivity(i);
+            goToFavorite(ListActivity.class);
         }
     };
 
     View.OnClickListener searchFavorisMapHandler = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //Appel de l'activité Map pour les favoris
-            Intent i = new Intent(SearchActivity.this, MapActivity.class);
+            goToFavorite(MapActivity.class);
+        }
+    };
+
+    AdapterView.OnItemClickListener searchNameHandler = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            City city = (City) parent.getAdapter().getItem(position);
+
+            Intent i = new Intent(SearchActivity.this, DetailActivity.class);
+            i.putExtra("City", city);
             startActivity(i);
         }
     };
@@ -238,21 +269,21 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
     }
 
 
-
     /**
      * Creating google api client object
-     * */
+     */
     protected synchronized void buildGoogleApiClient() {
         if (checkPlayServices()) {
             mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API).build();
-        }    }
+        }
+    }
 
     @Override
     public void onConnected(Bundle bundle) {
-      displayLocation();
+        displayLocation();
     }
 
     @Override
