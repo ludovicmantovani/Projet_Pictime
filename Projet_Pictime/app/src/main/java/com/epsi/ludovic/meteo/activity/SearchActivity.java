@@ -73,43 +73,22 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
                     .build();*/
 
         etVille = (EditText) findViewById(R.id.eTVille);
-        tvDistance = (TextView) findViewById(R.id.tvDistance);
-        skbDistance = (SeekBar) findViewById(R.id.skbDistance);
         btnRechercher = (Button) findViewById(R.id.btnRechercher);
         btnFavoris = (Button) findViewById(R.id.btnFavoris);
         btnFavorisMap = (Button) findViewById(R.id.btnFavorisMap);
         weatherService = ServiceGenerator.createService(Weather.class);
 
-        if (etVille == null || tvDistance == null || skbDistance == null ||
-                btnRechercher == null || btnFavoris == null || btnFavorisMap == null) {
+        if (etVille == null || btnRechercher == null ||
+                btnFavoris == null || btnFavorisMap == null) {
             throw new NullPointerException("Widget not found in view !");
         }
 
-        tvDistance.setText(seekBarValue + " Km");
-        skbDistance.setProgress(seekBarValue);
-        skbDistance.setOnSeekBarChangeListener(distanceHandler);
         btnRechercher.setOnClickListener(searchDistanceHandler);
         btnFavoris.setOnClickListener(searchFavorisHandler);
         btnFavorisMap.setOnClickListener(searchFavorisMapHandler);
 
     }
 
-
-    SeekBar.OnSeekBarChangeListener distanceHandler = new SeekBar.OnSeekBarChangeListener(){
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            seekBarValue = progress;
-            tvDistance.setText(seekBarValue + " Km");
-        }
-    };
 
     View.OnClickListener searchDistanceHandler = new View.OnClickListener() {
         public void onClick(View v) {

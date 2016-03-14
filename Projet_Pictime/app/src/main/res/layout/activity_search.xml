@@ -13,7 +13,7 @@
     <!--Autocomplete city research-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -27,85 +27,34 @@
             android:id="@+id/eTVille"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:hint="Ville" />
+            android:hint="Ville"
+            android:singleLine="true" />
     </LinearLayout>
 
     <!--Geolocalisation city research-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Recherche à proximité:"
-                android:textSize="@dimen/section_title" />
-
-            <TextView
-                android:id="@+id/tvDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:text=""
-                android:textSize="@dimen/section_title"
-                tools:text="10 Km" />
-        </LinearLayout>
-
-
-        <SeekBar
-            android:id="@+id/skbDistance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:progress="10" />
-
-        <!--TextViews for SeekBarlegend-->
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="0 Km" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="50 Km" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:paddingRight="10dp"
-                android:text="100 Km" />
-        </RelativeLayout>
+            android:text="Recherche à proximité:"
+            android:textSize="@dimen/section_title" />
 
         <Button
             android:id="@+id/btnRechercher"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Rechercher">
-        </Button>
+            android:text="Rechercher"></Button>
     </LinearLayout>
 
     <!--Favoris city research-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -119,14 +68,13 @@
             android:id="@+id/btnFavoris"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Favoris">
-        </Button>
+            android:text="Favoris"></Button>
+
         <Button
             android:id="@+id/btnFavorisMap"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Map">
-        </Button>
+            android:text="Map"></Button>
 
     </LinearLayout>
 </LinearLayout>
