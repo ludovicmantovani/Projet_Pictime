@@ -93,7 +93,6 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
         AutocompleteAdapter autocompleteAdapter = new AutocompleteAdapter(context, R.layout.activity_search, R.id.city_name);
         cityDAO.close();
         autoCompleteTextViewVille.setAdapter(autocompleteAdapter);
-        autoCompleteTextViewVille.setOnItemClickListener(searchNameHandler);
 
         btnRechercher.setOnClickListener(searchDistanceHandler);
         btnFavoris.setOnClickListener(searchFavorisHandler);
@@ -151,18 +150,6 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
             goToFavorite(MapActivity.class);
         }
     };
-
-    AdapterView.OnItemClickListener searchNameHandler = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            City city = (City) parent.getAdapter().getItem(position);
-
-            Intent i = new Intent(SearchActivity.this, DetailActivity.class);
-            i.putExtra("City", city);
-            startActivity(i);
-        }
-    };
-
 
     @Override
     public void onResume() {

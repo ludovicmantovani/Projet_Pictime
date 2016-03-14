@@ -1,15 +1,19 @@
 package com.epsi.ludovic.meteo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.TextView;
 
 import com.epsi.ludovic.meteo.DAO.BddNameConvention;
 import com.epsi.ludovic.meteo.DAO.CityDAO;
 import com.epsi.ludovic.meteo.R;
+import com.epsi.ludovic.meteo.activity.DetailActivity;
 import com.epsi.ludovic.meteo.object.City;
 
 import java.util.ArrayList;
@@ -36,15 +40,28 @@ public class AutocompleteAdapter extends ArrayAdapter<City> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = View.inflate(getContext(), R.layout.activity_list_item, null);
-        City city = getItem(position);
-        TextView cityNameTextView = (TextView) view.findViewById(R.id.cityName);
-        if (cityNameTextView != null && cityNameTextView instanceof TextView)
-        {
-            cityNameTextView.setText(city.getName());
+    public View getView(int position, View convertView, final ViewGroup parent) {
+        final City city = getItem(position);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_list_item, parent, false);
         }
-        return view;
+        // Lookup view for data population
+        Button cityName = (Button) convertView.findViewById(R.id.cityName);
+        // Populate the data into the template view using the data object
+        cityName.setText(city.getName());
+        // Return the completed view to render on screen
+
+        cityName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(parent.getContext(), DetailActivity.class);
+
+                //On affecte à l'Intent le Bundle que l'on a créé
+                intent.putExtra("data", city);
+                parent.getContext().startActivity(intent);
+            }
+        });
+        return convertView;
     }
 
     @Override
