@@ -43,6 +43,27 @@
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.ListActivity" />
         <activity android:name=".activity.MenuActivity" />
+
+
+<!--
+        &lt;!&ndash; Activité de configuration &ndash;&gt;
+        <activity android:name=".AppWidgetConfigure">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        &lt;!&ndash; Déclaration du widget &ndash;&gt;
+        <receiver android:name=".AppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/weather_widget_provider" />
+        </receiver>
+
+        &lt;!&ndash; Service du widget &ndash;&gt;
+        <service android:name=".ImageWidgetService"></service>-->
     </application>
 
 </manifest>
