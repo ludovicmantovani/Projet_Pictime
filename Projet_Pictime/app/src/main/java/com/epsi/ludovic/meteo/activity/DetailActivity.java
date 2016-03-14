@@ -60,10 +60,10 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
         lastUpdate = System.currentTimeMillis();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String idCity = bundle.getString("idCity");
+        City data =  (City) bundle.getSerializable("data");
 
         parameters = new LinkedHashMap<String, String>();
-        parameters.put("id", idCity);
+        parameters.put("id", data.getId());
         parameters.put("lang", "fr");
         parameters.put("units", "metric");
         parameters.put("APPID", "dea3ec44f7bd6dbcdbd20c4bbf9b6f05");
@@ -81,11 +81,10 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
                     lblCityName.setText(s.getName());
                     lblWeather.setText(s.getWeather().get(0).getDescription().toString().toUpperCase());
                     Double speed = Double.parseDouble(s.getWind().getSpeed())*(3.6);
-                    Log.d("VITESSE", String.format("%.2f", speed));
-                    lblWind.setText(String.format("%.2f", speed));
-                    lblTemp.setText(s.getMain().getTemp());
-                    lblPressure.setText(s.getMain().getPressure());
-                    lblHumidity.setText(s.getMain().getHumidity());
+                    lblWind.setText("Vent : " +String.format("%.0f", speed) + " km/h");
+                    lblTemp.setText(s.getMain().getTemp() + " °C");
+                    lblPressure.setText("Pression Atmosphérique : " + s.getMain().getPressure()+ "hPa");
+                    lblHumidity.setText("Taux d'humidité : "+ s.getMain().getHumidity() +" %");
                     String name = "logo"+s.getWeather().get(0).getIcon();
                     int id = context.getResources().getIdentifier(name, "drawable",
                             context.getPackageName());

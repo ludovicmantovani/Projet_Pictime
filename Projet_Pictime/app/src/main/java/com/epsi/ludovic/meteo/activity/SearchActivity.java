@@ -100,9 +100,8 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
 /*        Intent i = new Intent(SearchActivity.this, ListActivity.class);
 
         startActivity(i);*/
-    }
-};
-
+        }
+    };
 
 
     View.OnClickListener searchFavorisHandler = new View.OnClickListener() {
@@ -143,13 +142,13 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
 
     /**
      * Method to verify google play services on the device
-     * */
+     */
     public boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil
                 .isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode,getParent() ,
+                GooglePlayServicesUtil.getErrorDialog(resultCode, getParent(),
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -181,52 +180,53 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
                 .getLastLocation(mGoogleApiClient);
 
         if (mLastLocation != null) {
-             Integer number = 10;
+            Integer number = 10;
 
             double latitude = mLastLocation.getLatitude();
             double longitude = mLastLocation.getLongitude();
             parameters = new LinkedHashMap<String, String>();
             parameters.put("lat", String.valueOf(latitude));
             parameters.put("lon", String.valueOf(longitude));
-            parameters.put("cnt",  String.valueOf(number));
+            parameters.put("cnt", String.valueOf(number));
             parameters.put("APPID", "dea3ec44f7bd6dbcdbd20c4bbf9b6f05");
+
+
+            try {
+                retrofit.Callback<JsonElement> c = new retrofit.Callback<JsonElement>() {
+
+                    @Override
+                    public void success(JsonElement s, Response response) {
+                        Gson gson = new Gson();
+                        DataSearch data = gson.fromJson(s, DataSearch.class);
+                        Intent intent = new Intent(SearchActivity.this, ListActivity.class);
+                        intent.putExtra("data", data);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d("DEBUG1", error.getUrl());
+                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                        alert.setTitle(error.getMessage())
+                                .setMessage("Failed to " + error.getUrl() + ": " +
+                                        error.getMessage())
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert);
+                        alert.show();
+                    }
+                };
+                weatherService.searchGPS(parameters, c);
+            } catch (Exception e) {
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
         }
-
-
-        try {
-            retrofit.Callback<JsonElement> c = new retrofit.Callback<JsonElement>() {
-
-                @Override
-                public void success(JsonElement s, Response response) {
-                    Gson gson = new Gson();
-                    DataSearch data = gson.fromJson(s, DataSearch.class);
-                    Intent intent = new Intent(SearchActivity.this, ListActivity.class);
-                    intent.putExtra("data", data);
-                    startActivity(intent);
-
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.d("DEBUG1", error.getUrl());
-                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    alert.setTitle(error.getMessage())
-                            .setMessage("Failed to " + error.getUrl() + ": " +
-                                    error.getMessage())
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert);
-                    alert.show();
-                }
-            };
-            weatherService.searchGPS(parameters, c);
-        } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-
     }
+
 
 
     /**

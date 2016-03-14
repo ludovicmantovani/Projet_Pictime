@@ -1,170 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.epsi.ludovic.meteo.activity.DetailActivity">
+    tools:context="ah.hathi.simpleweather.WeatherActivity$PlaceholderFragment" >
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/city_name"
-        tools:text="NOM VILLE"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tempLyt">
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        tools:text="city_name" />
 
+    <TextView
+        android:id="@+id/city_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/city_name"
+        android:layout_centerHorizontal="true"
+        android:textSize="13sp"
+        tools:text="city_update"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/city_temp"
-            android:textSize="48dp"
-            />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
-            android:id="@+id/city_logo"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tempUnit"
-            android:layout_toRightOf="@id/tempLyt"
-            android:text="°C"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/city_weather"
-            android:text="test"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="3dp"
-            android:id="@+id/lineTxt"
-            android:layout_marginTop="0dp"
-            tools:text="test"/>
-
-    </LinearLayout>
-
-
-
-    <!-- Here the current weather data -->
-
-    <!-- Temperature data -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/tempIcon"
-        android:layout_below="@id/tempLyt"
-        android:layout_marginTop="10dp"
-         />
-    <TextView
+        android:id="@+id/city_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tempMin"
-        android:layout_toRightOf="@id/tempIcon"
-        android:layout_alignTop="@id/tempIcon"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tempMax"
-        android:layout_toRightOf="@id/tempMin"
-        android:layout_alignBaseline="@id/tempMin"
-        android:layout_marginLeft="10dp"/>
-    <!-- End temp Data -->
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="70sp"
 
-    <!-- Wind data -->
-    <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/windIcon"
-        android:src="@drawable/ic_wind"
-        android:layout_below="@id/tempIcon"
-        android:layout_marginTop="10dp"/>
+        />
+
     <TextView
+        android:id="@+id/city_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        tools:text="city_temp"/>
+
+    <TextView
+        android:id="@+id/city_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/city_logo"
+        android:layout_centerHorizontal="true"
+        tools:text="city_weather"
+        />
+    <TextView
         android:id="@+id/city_wind"
-        android:layout_toRightOf="@id/windIcon"
-        android:layout_alignTop="@id/windIcon"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="10dp"/>
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/windDeg"
-        android:layout_toRightOf="@id/city_wind"
-        android:layout_alignBaseline="@id/city_wind"
-        android:layout_marginLeft="10dp"
-        android:text="km/heure"/>
-    <!-- End wind Data -->
-
-    <!-- Humidity -->
-    <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/humidityIcon"
-        android:src="@drawable/ic_humidity"
-        android:layout_below="@id/windIcon"
-        android:layout_marginTop="10dp"/>
+        android:layout_below="@+id/city_weather"
+        android:layout_centerHorizontal="true"
+        tools:text="city_wind"
+        />
+    
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/city_humidity"
-        android:layout_toRightOf="@id/humidityIcon"
-        android:layout_alignTop="@id/humidityIcon"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="10dp"/>
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/humidity"
-        android:layout_toRightOf="@id/city_humidity"
-        android:layout_alignTop="@id/city_humidity"
-        android:layout_marginLeft="10dp"
-        android:text="%"/>
-    <!-- End Humidity Data -->
+        android:layout_below="@+id/city_wind"
+        android:layout_centerHorizontal="true"
+        tools:text="city_humidity"
+        />
 
-    <!-- Pressure data -->
-    <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/pressureIcon"
-        android:src="@drawable/ic_pressure"
-        android:layout_below="@id/humidityIcon"
-        android:layout_marginTop="10dp"/>
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/city_pressure"
-        android:layout_toRightOf="@id/pressureIcon"
-        android:layout_alignTop="@id/pressureIcon"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="10dp"/>
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/pressureStat"
-        android:layout_toRightOf="@id/city_pressure"
-        android:layout_alignBaseline="@id/city_pressure"
-        android:layout_marginLeft="10dp"
-        android:text="hPa"/>
-    <!-- End Pressure data -->
-
+        android:layout_below="@+id/city_humidity"
+        android:layout_centerHorizontal="true"
+        tools:text="city_pressure"
+        />
 
 
 </RelativeLayout>

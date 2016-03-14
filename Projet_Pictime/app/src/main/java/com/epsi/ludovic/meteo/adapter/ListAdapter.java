@@ -44,7 +44,7 @@ public class ListAdapter extends ArrayAdapter<City> {
                 Intent intent = new Intent(parent.getContext(), DetailActivity.class);
 
                 //On affecte à l'Intent le Bundle que l'on a créé
-                intent.putExtra("idCity", city.getId());
+                intent.putExtra("data", city);
                 parent.getContext().startActivity(intent);
             }
         });
