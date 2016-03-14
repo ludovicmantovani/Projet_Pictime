@@ -12,7 +12,7 @@ public abstract class DAOBase {
     protected final static int VERSION = 1;
 
     // File's name
-    protected final static String NOM = "pictime_project_database.db";
+    protected final static String NOM = BddNameConvention.DATABASE_NAME;
 
     protected SQLiteDatabase mDb = null;
     protected DatabaseHandler dbHandler = null;

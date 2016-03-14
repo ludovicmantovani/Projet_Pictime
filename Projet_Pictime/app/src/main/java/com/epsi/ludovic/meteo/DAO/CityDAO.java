@@ -3,6 +3,7 @@ package com.epsi.ludovic.meteo.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.epsi.ludovic.meteo.object.City;
 import com.epsi.ludovic.meteo.object.Coord;
@@ -127,8 +128,9 @@ public class CityDAO extends DAOBase {
         ArrayList<City> cityArrayList = new ArrayList<City>();
 
         String query = "select * from " + BddNameConvention.CITY_TABLE_NAME +
-                " where " + BddNameConvention.CITY_NAME + " like " + pattern + "%";
-
+                " where " + BddNameConvention.CITY_NAME + " like '" + pattern + "%'"
+                +" ORDER BY "+ BddNameConvention.CITY_NAME + " ASC";
+        Log.d("GETCITYLIKE", query);
         Cursor cursor = mDb.rawQuery(query,null);
 
         cursor.moveToFirst();
@@ -141,7 +143,6 @@ public class CityDAO extends DAOBase {
         return(new DataSearch(cityArrayList));
     }
 
-    //TODO UPDATE
     public int setToFavorite(City city, Boolean becomeFavorite) {
         ContentValues contentValues = new ContentValues();
         int favoriteValue = 0;
