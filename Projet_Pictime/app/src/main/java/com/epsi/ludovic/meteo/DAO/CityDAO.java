@@ -170,4 +170,28 @@ public class CityDAO extends DAOBase {
         return(newCity);
     }
 
+    public DataSearch getCities()
+    {
+        ArrayList<City> cityArrayList = new ArrayList<City>();
+
+        Cursor cursor = null;
+        /*String query = "select * from " + BddNameConvention.CITY_TABLE_NAME +
+                " where " + BddNameConvention.CITY_NAME +
+                " ORDER BY "+ BddNameConvention.CITY_NAME + " ASC";
+        Log.d("GETCITIES", query);
+        Log.d("GETCITIES", mDb.toString());*/
+
+        cursor = mDb.query(BddNameConvention.CITY_TABLE_NAME, null, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            City city = cursorToCity(cursor);
+            cityArrayList.add(city);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return(new DataSearch(cityArrayList));
+    }
+
 }

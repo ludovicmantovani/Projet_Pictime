@@ -38,9 +38,9 @@ public abstract class BddNameConvention {
             CITY_WEATHER_MMAIN + " TEXT," +
             CITY_WEATHER_MDESCRIPTION + " TEXT," +
             CITY_WEATHER_MICON + " TEXT," +
-            CITY_FAVORITE + " INTEGER" +
+            CITY_FAVORITE + " INTEGER," +
             CITY_MAIN_PRESSURE + " TEXT," +
-            CITY_MAIN_HUMIDITY + " TEXT," +
+            CITY_MAIN_HUMIDITY + " TEXT" +
             ");";
 
     public static final String CITY_TABLE_DROP = "DROP TABLE IF EXISTS " + CITY_TABLE_NAME + ";";
