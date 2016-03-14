@@ -18,13 +18,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.epsi.ludovic.meteo.DAO.CityDAO;
 import com.epsi.ludovic.meteo.R;
+import com.epsi.ludovic.meteo.adapter.AutocompleteAdapter;
+import com.epsi.ludovic.meteo.adapter.ListAdapter;
 import com.epsi.ludovic.meteo.itf.Weather;
 import com.epsi.ludovic.meteo.object.City;
 import com.epsi.ludovic.meteo.object.DataSearch;
@@ -40,6 +44,7 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit.RetrofitError;
@@ -49,16 +54,15 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
     //TODO delete distance search
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private final Context context = this;
-    private EditText etVille = null;
-    private TextView tvDistance = null;
-    private SeekBar skbDistance = null;
-    private int seekBarValue = 50;
+    private AutoCompleteTextView autoCompleteTextViewVille = null;
     private Button btnRechercher = null;
     private Button btnFavoris = null;
     private Button btnFavorisMap = null;
     private GoogleApiClient mGoogleApiClient;
     private Weather weatherService = null;
     private Map<String, String> parameters = null;
+    ListAdapter listAdapter = null;
+    CityDAO cityDAO = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +76,23 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
                     .addOnConnectionFailedListener(this)
                     .build();*/
 
-        etVille = (EditText) findViewById(R.id.eTVille);
+        autoCompleteTextViewVille = (AutoCompleteTextView) findViewById(R.id.aCTVVille);
         btnRechercher = (Button) findViewById(R.id.btnRechercher);
         btnFavoris = (Button) findViewById(R.id.btnFavoris);
         btnFavorisMap = (Button) findViewById(R.id.btnFavorisMap);
         weatherService = ServiceGenerator.createService(Weather.class);
 
-        if (etVille == null || btnRechercher == null ||
+        if (autoCompleteTextViewVille == null || btnRechercher == null ||
                 btnFavoris == null || btnFavorisMap == null) {
             throw new NullPointerException("Widget not found in view !");
         }
 
+        cityDAO = new CityDAO(context);
+        cityDAO.open();
+        List<City> cities = cityDAO.getCities().getCities();
+        AutocompleteAdapter  autocompleteAdapter = new AutocompleteAdapter(context,R.layout.activity_search, R.id.city_name);
+        cityDAO.close();
+        autoCompleteTextViewVille.setAdapter(autocompleteAdapter);
         btnRechercher.setOnClickListener(searchDistanceHandler);
         btnFavoris.setOnClickListener(searchFavorisHandler);
         btnFavorisMap.setOnClickListener(searchFavorisMapHandler);

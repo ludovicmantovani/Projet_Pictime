@@ -23,8 +23,8 @@
             android:text="Recherche par nom:"
             android:textSize="@dimen/section_title" />
 
-        <EditText
-            android:id="@+id/eTVille"
+        <AutoCompleteTextView
+            android:id="@+id/aCTVVille"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Ville"

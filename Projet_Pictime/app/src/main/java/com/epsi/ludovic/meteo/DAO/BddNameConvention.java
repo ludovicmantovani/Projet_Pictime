@@ -19,6 +19,8 @@ public abstract class BddNameConvention {
     public static final String CITY_WEATHER_MDESCRIPTION = "weather_mdescription";
     public static final String CITY_WEATHER_MICON = "weather_micon";
     public static final String CITY_FAVORITE = "favorite";
+    public static final String CITY_MAIN_PRESSURE = "main_pressure";
+    public static final String CITY_MAIN_HUMIDITY = "main_humidity";
 
 
     public static final String CITY_TABLE_NAME = "City";
@@ -36,7 +38,9 @@ public abstract class BddNameConvention {
             CITY_WEATHER_MMAIN + " TEXT," +
             CITY_WEATHER_MDESCRIPTION + " TEXT," +
             CITY_WEATHER_MICON + " TEXT," +
-            CITY_FAVORITE + " INTEGER" +
+            CITY_FAVORITE + " INTEGER," +
+            CITY_MAIN_PRESSURE + " TEXT," +
+            CITY_MAIN_HUMIDITY + " TEXT" +
             ");";
 
     public static final String CITY_TABLE_DROP = "DROP TABLE IF EXISTS " + CITY_TABLE_NAME + ";";
