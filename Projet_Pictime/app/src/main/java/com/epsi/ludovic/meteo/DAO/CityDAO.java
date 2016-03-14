@@ -32,7 +32,7 @@ public class CityDAO extends DAOBase {
     {
         City newCity = new City();
         Coord newCoord = new Coord();
-        Main newMain = new Main(cursor.getString(5),cursor.getString(5), cursor.getString(5));
+        Main newMain = new Main(cursor.getString(5),cursor.getString(13), cursor.getString(14));
         Wind newWind = new Wind(cursor.getString(7));
         Weather newWeather = new Weather(cursor.getInt(8),cursor.getString(9), cursor.getString(10),
                 cursor.getString(11));
@@ -58,7 +58,7 @@ public class CityDAO extends DAOBase {
         newCity.setUpdate(newdate);
         newCity.setWind(newWind);
         newCity.setWeather(newWeatherArrayList);
-        newCity.setFavorite((cursor.getInt(12)==1));
+        newCity.setFavorite((cursor.getInt(12) == 1));
 
         return (newCity);
     }
@@ -76,7 +76,6 @@ public class CityDAO extends DAOBase {
     public int update(City city)
     {
         //Set the format to sql date time*
-        //TODO Check date format
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date newdate = new Date();
         int favoriteValue = 0;
@@ -93,6 +92,8 @@ public class CityDAO extends DAOBase {
                 city.getWeather().get(0).getDescription());
         contentValues.put(BddNameConvention.CITY_WEATHER_MICON, city.getWeather().get(0).getIcon());
         contentValues.put(BddNameConvention.CITY_DATE, dateFormat.format(newdate));
+        contentValues.put(BddNameConvention.CITY_MAIN_PRESSURE, city.getMain().getPressure());
+        contentValues.put(BddNameConvention.CITY_MAIN_HUMIDITY, city.getMain().getHumidity());
 
         int ret = mDb.update(BddNameConvention.CITY_TABLE_NAME,
                 contentValues,
