@@ -80,7 +80,6 @@ public class CityDAO extends DAOBase {
         Date newdate = new Date();
         int favoriteValue = 0;
 
-        //TODO ! if null attribute
         ContentValues contentValues = new ContentValues();
         contentValues.put(BddNameConvention.CITY_COORD_LON, city.getCoord().getLon());
         contentValues.put(BddNameConvention.CITY_COORD_LAT, city.getCoord().getLat());
@@ -175,11 +174,6 @@ public class CityDAO extends DAOBase {
         ArrayList<City> cityArrayList = new ArrayList<City>();
 
         Cursor cursor = null;
-        /*String query = "select * from " + BddNameConvention.CITY_TABLE_NAME +
-                " where " + BddNameConvention.CITY_NAME +
-                " ORDER BY "+ BddNameConvention.CITY_NAME + " ASC";
-        Log.d("GETCITIES", query);
-        Log.d("GETCITIES", mDb.toString());*/
 
         cursor = mDb.query(BddNameConvention.CITY_TABLE_NAME, null, null, null, null, null, null);
 

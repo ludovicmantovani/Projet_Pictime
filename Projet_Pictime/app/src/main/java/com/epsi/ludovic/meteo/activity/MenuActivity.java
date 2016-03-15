@@ -23,14 +23,9 @@ public class MenuActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView view;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -92,7 +87,6 @@ public class MenuActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Vous n'avez pas de villes favorites.",
                                     Toast.LENGTH_LONG).show();
                         }
-
                 }
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
@@ -102,14 +96,4 @@ public class MenuActivity extends AppCompatActivity {
         });
 
     }
-
-
 }
-
-
-
-
-
-
-
-

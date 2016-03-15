@@ -72,11 +72,6 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
 
         setContentView(R.layout.activity_search);
         buildGoogleApiClient();
-           /* mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();*/
 
         autoCompleteTextViewVille = (AutoCompleteTextView) findViewById(R.id.aCTVVille);
         btnRechercher = (Button) findViewById(R.id.btnRechercher);
@@ -105,13 +100,6 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
     View.OnClickListener searchDistanceHandler = new View.OnClickListener() {
         public void onClick(View v) {
             displayLocation();
-            /**
-             * Method to display the location on UI
-             * */
-
-/*        Intent i = new Intent(SearchActivity.this, ListActivity.class);
-
-        startActivity(i);*/
         }
     };
 
@@ -163,9 +151,6 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
     public void onStart() {
 
         super.onStart();
-/*        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }*/
     }
 
 
