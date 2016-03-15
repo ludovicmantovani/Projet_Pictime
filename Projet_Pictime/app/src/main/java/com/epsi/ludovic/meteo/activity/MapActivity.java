@@ -66,7 +66,7 @@ public class MapActivity extends MenuActivity {
                 googleMap.addMarker(new MarkerOptions().
                         position(new LatLng(Double.parseDouble(city.getCoord().getLat()), Double.parseDouble(city.getCoord().getLon()))).title(city.getName()));
             }
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(list.get(0).getCoord().getLat()), Double.parseDouble(list.get(0).getCoord().getLon())), 10);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(list.get(0).getCoord().getLat()), Double.parseDouble(list.get(0).getCoord().getLon())), 5);
             googleMap.animateCamera(cameraUpdate);
         }
         catch (Exception e) {
