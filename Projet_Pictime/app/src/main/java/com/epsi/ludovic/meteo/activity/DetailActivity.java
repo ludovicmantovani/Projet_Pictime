@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,10 +48,24 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
     private TextView lblUpdate;
     private ImageView iconeWeather;
     private ImageView iconeFavorite;
-    private  Weather weatherService = null;
+    private Weather weatherService = null;
     private long lastUpdate;
     private String idCity;
     private City data;
+    ImageView.OnClickListener switchStarHandler = new ImageView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            cityDao.open();
+            if (cityDao.getCityById(idCity).isFavorite()) {
+                cityDao.setToFavorite(data, false);
+                iconeFavorite.setImageResource(R.drawable.ic_star_false);
+            } else {
+                cityDao.setToFavorite(data, true);
+                iconeFavorite.setImageResource(R.drawable.ic_star);
+            }
+            cityDao.close();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +85,7 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        data =  (City) bundle.getSerializable("data");
+        data = (City) bundle.getSerializable("data");
         idCity = data.getId();
         parameters = new LinkedHashMap<String, String>();
         parameters.put("id", idCity);
@@ -108,7 +123,7 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
                     int id = context.getResources().getIdentifier(name, "drawable",
                             context.getPackageName());
                     iconeWeather.setImageResource(id);
-                    if (city.isFavorite()){
+                    if (city.isFavorite()) {
                         iconeFavorite.setImageResource(R.drawable.ic_star);
                     }
 
@@ -133,7 +148,7 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
                     int id = context.getResources().getIdentifier(name, "drawable",
                             context.getPackageName());
                     iconeWeather.setImageResource(id);
-                    if (city.isFavorite()){
+                    if (city.isFavorite()) {
                         iconeFavorite.setImageResource(R.drawable.ic_star);
                     }
 
@@ -153,20 +168,6 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
         }
 
     }
-
-    ImageView.OnClickListener switchStarHandler = new ImageView.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            cityDao.open();
-            if (cityDao.getCityById(idCity).isFavorite())
-            {cityDao.setToFavorite(data, false);
-                iconeFavorite.setImageResource(R.drawable.ic_star_false);}
-            else
-            {cityDao.setToFavorite(data, true);
-                iconeFavorite.setImageResource(R.drawable.ic_star);}
-            cityDao.close();
-        }
-    };
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -207,11 +208,19 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
                 return;
             }
             lastUpdate = actualTime;
-            updateInformation();
-            Toast.makeText(context, "La météo a été mise à jour ",
-                    Toast.LENGTH_LONG).show();
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (cm.getActiveNetworkInfo() != null) {
+                updateInformation();
+                Toast.makeText(context, "La météo a été mise à jour ",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Aucune connexion internet : la météo de la ville ne peut être mise à jour ",
+                        Toast.LENGTH_LONG).show();
+            }
+
         }
     }
+
 }
 
 
