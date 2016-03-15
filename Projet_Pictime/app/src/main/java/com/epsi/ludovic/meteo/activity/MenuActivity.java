@@ -14,12 +14,16 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.epsi.ludovic.meteo.DAO.CityDAO;
 import com.epsi.ludovic.meteo.R;
+import com.epsi.ludovic.meteo.object.DataSearch;
 
 
 public class MenuActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView view;
+
+
 
 
     @Override
@@ -49,17 +53,45 @@ public class MenuActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_star:
                         Intent star = new Intent(getApplicationContext(), ListActivity.class);
-                        startActivity(star);
+                        DataSearch dataSearch = null;
+
+                        //Recherche des villes favorites dans la BDD
+                        CityDAO cityDAO = new CityDAO(getApplicationContext());
+                        cityDAO.open();
+                        dataSearch = cityDAO.getFavorite();
+                        cityDAO.close();
+
+                        //Si favoris présents dans la BDD
+                        if (dataSearch.getCities().size() > 0) {
+                            //Appel de l'activité list pour les favoris
+                            Intent i = new Intent(getApplicationContext(), ListActivity.class);
+                            i.putExtra("data", dataSearch);
+                            startActivity(i);
+                        }
+                        else //sinon affichage message
+                        {
+                            Toast.makeText(getApplicationContext(), "Vous n'avez pas de villes favorites.",
+                                    Toast.LENGTH_LONG).show();
+                        }
                         break;
                     case R.id.nav_maps:
-                        Intent map = new Intent(getApplicationContext(), MapActivity.class);
-                        startActivity(map);
-                        break;
-                    case R.id.nav_contact:
-                        /*TODO a changer*/
-                        Intent contact = new Intent(getApplicationContext(), SearchActivity.class);
-                        startActivity(contact);
-                        break;
+                        //Si favoris présents dans la BDD
+                        cityDAO = new CityDAO(getApplicationContext());
+                        cityDAO.open();
+                        dataSearch = cityDAO.getFavorite();
+                        cityDAO.close();
+
+                        if (dataSearch.getCities().size() > 0) {
+                            //Appel de l'activité list pour les favoris
+                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                            i.putExtra("data", dataSearch);
+                            startActivity(i);
+                        }
+                        else //sinon affichage message
+                        {
+                            Toast.makeText(getApplicationContext(), "Vous n'avez pas de villes favorites.",
+                                    Toast.LENGTH_LONG).show();
+                        }
 
                 }
                 menuItem.setChecked(true);

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.epsi.ludovic.meteo.DAO.BddNameConvention;
 import com.epsi.ludovic.meteo.DAO.CityDAO;
@@ -54,11 +55,21 @@ public class AutocompleteAdapter extends ArrayAdapter<City> {
         cityName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(parent.getContext(), DetailActivity.class);
+                cityDAO.open();
+                if (cityDAO.getCityById(city.getId()).getUpdate() != null)
+                {
+                    Intent intent = new Intent(parent.getContext(), DetailActivity.class);
 
-                //On affecte à l'Intent le Bundle que l'on a créé
-                intent.putExtra("data", city);
-                parent.getContext().startActivity(intent);
+                    //On affecte à l'Intent le Bundle que l'on a créé
+                    intent.putExtra("data", city);
+                    parent.getContext().startActivity(intent);
+                }
+
+                else {
+                    Toast.makeText(parent.getContext(), "Impossible d'afficher la météo de cette ville. Aucune donnée sauvegardée",
+                            Toast.LENGTH_LONG).show();
+                }
+                cityDAO.close();
             }
         });
         return convertView;

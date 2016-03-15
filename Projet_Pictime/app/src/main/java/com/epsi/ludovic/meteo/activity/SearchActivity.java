@@ -52,8 +52,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class SearchActivity extends MenuActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    //TODO delete distance search
+
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
+    private static final int PERMISSION_REQUEST_CODE = 100;
     private final Context context = this;
     private AutoCompleteTextView autoCompleteTextViewVille = null;
     private Button btnRechercher = null;
@@ -127,7 +128,7 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
         if (dataSearch.getCities().size() > 0) {
             //Appel de l'activité list pour les favoris
             Intent i = new Intent(SearchActivity.this, intentClass);
-            i.putExtra("DataSearch", dataSearch);
+            i.putExtra("data", dataSearch);
             startActivity(i);
         }
         else //sinon affichage message
@@ -192,15 +193,11 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
     public void displayLocation() {
 
         if (ActivityCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: DEMANDER L'AUTORISATION
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
 
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
         }
 
         mGoogleApiClient.connect();
@@ -234,17 +231,9 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.d("DEBUG1", error.getUrl());
-                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                        alert.setTitle(error.getMessage())
-                                .setMessage("Failed to " + error.getUrl() + ": " +
-                                        error.getMessage())
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert);
-                        alert.show();
+                        Toast.makeText(getApplicationContext(),
+                                "Attention, impossible de récuperer les villes aux alentours. Vérifiez votre connexion internet (2G/3G/4G ou Wifi)", Toast.LENGTH_LONG)
+                                .show();
                     }
                 };
                 weatherService.searchGPS(parameters, c);

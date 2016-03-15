@@ -12,8 +12,5 @@
             android:id="@+id/nav_maps"
             android:icon="@drawable/ic_maps"
             android:title="@string/nav_map" />
-        <item
-            android:id="@+id/nav_contact"
-            android:icon="@drawable/ic_contact"
-            android:title="@string/nav_contact" />
+
 </menu>

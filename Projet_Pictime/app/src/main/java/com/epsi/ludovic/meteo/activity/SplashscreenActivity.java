@@ -69,9 +69,6 @@ public class SplashscreenActivity extends AppCompatActivity {
                 cityDAO.close();
 
             }
-        } else {
-            Toast.makeText(context, "Database find",
-                   Toast.LENGTH_SHORT).show();
         }
         //execution de l'attente
         new Handler().postDelayed(new Runnable() {

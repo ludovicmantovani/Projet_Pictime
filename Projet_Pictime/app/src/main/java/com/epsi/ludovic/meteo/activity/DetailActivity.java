@@ -12,6 +12,7 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,9 +34,9 @@ import retrofit.client.Response;
 
 public class DetailActivity extends MenuActivity implements SensorEventListener {
 
+    private final Context context = this;
     private Map<String, String> parameters = null;
     private SensorManager sensorManager;
-    private final Context context = this;
     private CityDAO cityDao = new CityDAO(this);
     private TextView lblCityName;
     private TextView lblWeather;
@@ -45,9 +46,11 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
     private TextView lblHumidity;
     private TextView lblUpdate;
     private ImageView iconeWeather;
+    private ImageView iconeFavorite;
     private  Weather weatherService = null;
     private long lastUpdate;
     private String idCity;
+    private City data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,32 +64,33 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
         lblHumidity = (TextView) findViewById(R.id.city_humidity);
         lblUpdate = (TextView) findViewById(R.id.city_update);
         iconeWeather = (ImageView) findViewById(R.id.city_logo);
+        iconeFavorite = (ImageView) findViewById(R.id.city_favorite);
 
         weatherService = ServiceGenerator.createService(Weather.class);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        City data =  (City) bundle.getSerializable("data");
+        data =  (City) bundle.getSerializable("data");
         idCity = data.getId();
         parameters = new LinkedHashMap<String, String>();
         parameters.put("id", idCity);
         parameters.put("lang", "fr");
         parameters.put("units", "metric");
         parameters.put("APPID", "dea3ec44f7bd6dbcdbd20c4bbf9b6f05");
+        iconeFavorite.setOnClickListener(switchStarHandler);
 
         updateInformation();
 
+
     }
 
-
-        private void updateInformation() {
+    private void updateInformation() {
             try {
                 retrofit.Callback<City> c = new retrofit.Callback<City>() {
 
                     @Override
                     public void success(City s, Response response) {
 
-                        Log.d("TEST", s.toString());
                         cityDao.open();
                         cityDao.update(s);
                         City city = cityDao.getCityById(idCity);
@@ -96,31 +100,42 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
                         Double speed = Double.parseDouble(city.getWind().getSpeed()) * (3.6);
                         lblWind.setText("Vent : " + String.format("%.0f", speed) + " km/h");
                         lblTemp.setText(city.getMain().getTemp() + " °C");
-                        lblPressure.setText("Pression Atmosphérique : " + city.getMain().getPressure() + "hPa");
+                        lblPressure.setText("Pression Atmosphérique : " + city.getMain().getPressure() + " hPa");
                         lblHumidity.setText("Taux d'humidité : " + city.getMain().getHumidity() + " %");
-                        Date date = new Date();
                         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-                        lblUpdate.setText(shortDateFormat.format(date));
+                        lblUpdate.setText(shortDateFormat.format(city.getUpdate()));
                         String name = "logo" + city.getWeather().get(0).getIcon();
                         int id = context.getResources().getIdentifier(name, "drawable",
                                 context.getPackageName());
                         iconeWeather.setImageResource(id);
+                        if (city.isFavorite()){
+                            iconeFavorite.setImageResource(R.drawable.ic_star);
+                        }
+
 
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.d("DEBUG1", error.getUrl());
-                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                        alert.setTitle(error.getMessage())
-                                .setMessage("Failed to " + error.getUrl())
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // continue with delete
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert);
-                        alert.show();
+                        cityDao.open();
+                        City city = cityDao.getCityById(idCity);
+                        cityDao.close();
+                        lblCityName.setText(city.getName());
+                        lblWeather.setText(city.getWeather().get(0).getDescription().toString().toUpperCase());
+                        Double speed = Double.parseDouble(city.getWind().getSpeed()) * (3.6);
+                        lblWind.setText("Vent : " + String.format("%.0f", speed) + " km/h");
+                        lblTemp.setText(city.getMain().getTemp() + " °C");
+                        lblPressure.setText("Pression Atmosphérique : " + city.getMain().getPressure() + " hPa");
+                        lblHumidity.setText("Taux d'humidité : " + city.getMain().getHumidity() + " %");
+                        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+                        lblUpdate.setText(shortDateFormat.format(city.getUpdate()));
+                        String name = "logo" + city.getWeather().get(0).getIcon();
+                        int id = context.getResources().getIdentifier(name, "drawable",
+                                context.getPackageName());
+                        iconeWeather.setImageResource(id);
+                        if (city.isFavorite()){
+                            iconeFavorite.setImageResource(R.drawable.ic_star);
+                        }
 
 
                     }
@@ -138,6 +153,22 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
         }
 
     }
+
+
+
+    ImageView.OnClickListener switchStarHandler = new ImageView.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            cityDao.open();
+            if (cityDao.getCityById(idCity).isFavorite())
+            {cityDao.setToFavorite(data, false);
+                iconeFavorite.setImageResource(R.drawable.ic_star_false);}
+            else
+            {cityDao.setToFavorite(data, true);
+                iconeFavorite.setImageResource(R.drawable.ic_star);}
+            cityDao.close();
+        }
+    };
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -179,7 +210,10 @@ public class DetailActivity extends MenuActivity implements SensorEventListener 
             }
             lastUpdate = actualTime;
             updateInformation();
+            Toast.makeText(context, "La météo a été mise à jour ",
+                    Toast.LENGTH_LONG).show();
+        }
         }
     }
 
-}
+
