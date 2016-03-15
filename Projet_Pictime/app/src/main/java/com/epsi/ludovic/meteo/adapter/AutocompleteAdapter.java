@@ -2,6 +2,7 @@ package com.epsi.ludovic.meteo.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,8 @@ public class AutocompleteAdapter extends ArrayAdapter<City> {
             @Override
             public void onClick(View view) {
                 cityDAO.open();
-                if (cityDAO.getCityById(city.getId()).getUpdate() != null)
+                ConnectivityManager cm = (ConnectivityManager)parent.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                if (cityDAO.getCityById(city.getId()).getUpdate() != null || cm.getActiveNetworkInfo() != null)
                 {
                     Intent intent = new Intent(parent.getContext(), DetailActivity.class);
 
