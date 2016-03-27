@@ -1,29 +1,15 @@
 package com.epsi.ludovic.meteo.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epsi.ludovic.meteo.DAO.CityDAO;
@@ -31,21 +17,16 @@ import com.epsi.ludovic.meteo.R;
 import com.epsi.ludovic.meteo.adapter.AutocompleteAdapter;
 import com.epsi.ludovic.meteo.adapter.ListAdapter;
 import com.epsi.ludovic.meteo.itf.Weather;
-import com.epsi.ludovic.meteo.object.City;
 import com.epsi.ludovic.meteo.object.DataSearch;
 import com.epsi.ludovic.meteo.service.ServiceGenerator;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit.RetrofitError;
@@ -63,7 +44,6 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
     private GoogleApiClient mGoogleApiClient;
     private Weather weatherService = null;
     private Map<String, String> parameters = null;
-    ListAdapter listAdapter = null;
     CityDAO cityDAO = null;
 
     @Override
@@ -158,12 +138,11 @@ public class SearchActivity extends MenuActivity implements GoogleApiClient.Conn
      * Method to verify google play services on the device
      */
     public boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil
-                .isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(context);
         if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, getParent(),
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            if (googleApiAvailability.isUserResolvableError(resultCode)) {
+                googleApiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Vous n'êtes pas pourvu d'un téléphone compatible", Toast.LENGTH_LONG)
